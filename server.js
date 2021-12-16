@@ -2,6 +2,15 @@ const express = require("express");
 const cors = require("cors");
 const db = require("./models/index");
 const app = express();
+const movies = require('./models/movies.model')
+const users = require('./models/users.model')
+
+// var mongoose = require('mongoose');
+// var mongoDB = 'insert_your_database_url_here';
+// mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
 
 // var corsOptions = {
 //   origin: "http://localhost:8081"
@@ -33,6 +42,19 @@ db.mongoose
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
+app.get("/getuserslist",async (req, res) => {
+  await users.find()
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving tutorials."
+    });
+  });
+});
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
